@@ -56,7 +56,7 @@ while True:
     draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
 
     # Custom message
-    custom_message = "Hello from Keanu! Practice is over return back to the boat house."  # <- change this to whatever message you want
+    custom_message = "Hello from Keanu! Practice is over return back to the boat house!"  # <- change this to whatever message you want
     draw.text((0, 24), custom_message, font=font, fill=255)  # Center vertically
 
     # Display the image
