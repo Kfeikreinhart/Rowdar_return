@@ -52,36 +52,16 @@ draw.rectangle((0, 0, oled.width, oled.height), outline=255, fill=255)
 font = ImageFont.truetype('PixelOperator.ttf', 16)
 
 while True:
-    # Draw a black filled box to clear the image
+    # Clear screen
     draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
 
-    # Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
-    cmd = "hostname -I | cut -d\' \' -f1"
-    IP = subprocess.check_output(cmd, shell=True)
-    cmd = "top -bn1 | grep load | awk '{printf \"CPU: %.2f\", $(NF-2)}'"
-    CPU = subprocess.check_output(cmd, shell=True)
-    cmd = "free -m | awk 'NR==2{printf \"%.1f %.1f %.1f\", $3/1024,$2/1024,($3/$2)*100}'"
-    MemUsage = subprocess.check_output(cmd, shell=True)
-    mem_parts = MemUsage.decode('utf-8').strip().split()
-    mem_used_gb = mem_parts[0]
-    mem_total_gb = mem_parts[1]
-    mem_percent = mem_parts[2]
-    mem_display = f"Mem: {mem_used_gb}/{mem_total_gb}GB {mem_percent}%"
-    cmd = "df -h | awk '$NF==\"/\"{printf \"Disk: %d/%dGB %s\", $3,$2,$5}'"
-    Disk = subprocess.check_output(cmd, shell=True)
-    cmd = "vcgencmd measure_temp |cut -f 2 -d '='"
-    Temp = subprocess.check_output(cmd, shell=True)
-
-    # Pi Stats Display
-    draw.text((0, 0), "IP: " + str(IP, 'utf-8'), font=font, fill=255)
-    draw.text((0, 16), str(CPU, 'utf-8') + "LA", font=font, fill=255)
-    draw.text((80, 16), str(Temp, 'utf-8'), font=font, fill=255)
-    draw.text((0, 32), mem_display, font=font, fill=255)
-    draw.text((0, 48), str(Disk, 'utf-8'), font=font, fill=255)
+    # Custom message
+    custom_message = "Hello from Pi!"  # <- change this to whatever message you want
+    draw.text((0, 24), custom_message, font=font, fill=255)  # Center vertically
 
     # Display the image
     oled.image(image)
     oled.show()
 
-    # Wait for the next loop
+    # Refresh delay
     time.sleep(LOOPTIME)
