@@ -1,4 +1,4 @@
 #!/bin/bash
 source stats_env/bin/activate
-cd OLED_Stats
+cd Rowdar_return
 python3 stats.py
