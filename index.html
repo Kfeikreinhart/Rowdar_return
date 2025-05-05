@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OLED Message Controller</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; }
+    label, button { display: block; margin-top: 1rem; }
+    input { width: 100%; padding: 0.5rem; font-size: 1rem; }
+    #status { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>OLED Message Controller</h1>
+  <label for="msg">Enter your message:</label>
+  <input type="text" id="msg" placeholder="Type something…" />
+
+  <button id="send">Update OLED</button>
+  <div id="status"></div>
+
+  <script>
+    const apiURL = "http://PI_IP_ADDRESS:5000/api/message";  // ← replace PI_IP_ADDRESS
+    document.getElementById("send").addEventListener("click", async () => {
+      const msg = document.getElementById("msg").value;
+      if (!msg.trim()) return alert("Please enter a message.");
+      document.getElementById("status").textContent = "Sending…";
+      try {
+        const res = await fetch(apiURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+        if (!res.ok) throw await res.json();
+        document.getElementById("status").textContent = "✅ Message updated!";
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").textContent = "❌ Error: " + (err.error||err);
+      }
+    });
+  </script>
+</body>
+</html>
